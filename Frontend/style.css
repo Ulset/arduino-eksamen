@@ -1,0 +1,23 @@
+.container {
+    margin-top: 30px;
+}
+
+.sensor {
+    padding: 0;
+}
+
+.info_text {
+    font-size: large;
+}
+
+#sensor_container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 10px;
+    row-gap: 5px;
+    margin-bottom: 5px;
+}
+
+#userFeedback {
+    transition: 0.2s;
+}

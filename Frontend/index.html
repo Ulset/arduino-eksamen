@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Embedded eksamen Sander</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<div class="container">
+    <h1>Alle sensorer <span class="badge badge-info">ESP32</span></h1>
+    <div id="no_data_alert" class="alert alert-danger" role="alert" style="display: none">
+        <b>Ser ikke ut som det finnes noe data.</b> Har du satt opp ESP32 riktig?
+        Venligst sjekk at ESP32 er flashed med riktig oppsett inne i .ino filen.
+        Husk å bytt Wifi SSID og passord.
+    </div>
+    <hr>
+    <div id="sensor_container"></div>
+    <p id="userFeedback" class="badge badge-pill badge-success">Data fra 14.11.2021 kl: 15:32</p>
+</div>
+</body>
+<script src="index.js"></script>
+</html>
