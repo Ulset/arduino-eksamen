@@ -6,8 +6,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
 <div class="container">
@@ -15,7 +17,20 @@
     <div id="no_data_alert" class="alert alert-danger" role="alert" style="display: none">
         <b>Ser ikke ut som det finnes noe data.</b> Har du satt opp ESP32 riktig?
         Venligst sjekk at ESP32 er flashed med riktig oppsett inne i .ino filen.
-        Husk å bytt Wifi SSID og passord.
+        Husk å bytt Wifi SSID og passord. Husk også at "Device name" kan ikke inneholde et mellomrom.
+    </div>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <p>
+            Under testing av flere ESP32 kontrollere støtte jeg på et problem hvor det kan hende de overskriver data.
+            Dette betyr at en ESP32 sletter data til den andre siden API kallet kan gå litt tregt (Dweet sin feil).
+            Det er ingen gode måter å gjøre dette på gratis, så hvis dette skjer bare prøv og start de opp på nytt
+            igjen, eventuelt kan man sette opp delay i .ino koden. (Virket som 10 sekunder som den er på nå funker fint).
+            <br><br>
+            JS koden henter automatisk nye data på et 12 sekunders mellomrom, prøv å ikke refresh siden for mye siden
+            man kan få en 'timeout' ved å sende for mange API kall. Hvis du får opp <strong>Ser ikke ut som det
+            finnes noe data.</strong> erroren, kan dette være pga en timeout. Sjekk consollen.
+        </p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="alert" aria-label="Close">Ok!</button>
     </div>
     <hr>
     <div id="sensor_container"></div>

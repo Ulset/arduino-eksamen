@@ -1,16 +1,6 @@
 const sensor_output = document.getElementById("sensor_container")
 
 const get_sensor_data = () => {
-  const TEMP_RANGE = [15, 29]
-  const HUMIDITY_RANGE = [50, 60]
-
-  const out = ["Andrea"].map(name => {
-    return {
-      name,
-      temp: Math.floor((Math.random() * (TEMP_RANGE[1] - TEMP_RANGE[0])) + TEMP_RANGE[0]),
-      humidity: Math.floor(Math.random() * (HUMIDITY_RANGE[1] - HUMIDITY_RANGE[0]) + HUMIDITY_RANGE[0])
-    }
-  })
   let userFeedbackDiv = document.getElementById("userFeedback")
   userFeedbackDiv.innerHTML = "Henter data..."
   userFeedbackDiv.classList.remove("badge-success")
@@ -18,7 +8,8 @@ const get_sensor_data = () => {
   return fetch("https://dweet.io/get/latest/dweet/for/sanderEksamen").then(r => r.json()).then(d => {
     const {this: status, with: contentArray} = d;
     if(status !== "succeeded") {
-      //TODO handle error
+      console.log("Feil ved henting av data, status:", status)
+      console.log(d)
       return []
     }
     const data = JSON.parse(contentArray[0].content.content)
@@ -37,7 +28,7 @@ const get_sensor_data = () => {
   })
 }
 
-const set_sensor_data = async () => {
+const display_sensor_data = async () => {
   const sensor_data = await get_sensor_data()
   const sensor_divs = sensor_data.map(sEl => {
     let div = document.createElement("div")
@@ -61,4 +52,4 @@ const set_sensor_data = async () => {
   sensor_divs.forEach(d => sensor_output.appendChild(d))
 }
 
-set_sensor_data().then(() => setInterval(set_sensor_data, 12000))
+display_sensor_data().then(() => setInterval(display_sensor_data, 12000))
