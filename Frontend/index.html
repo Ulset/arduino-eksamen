@@ -14,26 +14,40 @@
 <body>
 <div class="container">
     <h1>Alle sensorer <span class="badge badge-info">ESP32</span></h1>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <p>
+            <b>
+                Under testing av flere ESP32 kontrollere støtte jeg på et problem det tar lang tid for GET/POST komboen
+                av request for å gå gjennom (Dweet er ikke den kjappeste).
+                Siden ESP32 kontrolleren henter data fra Dweet for å så legge på egen data og legger
+                det tilbake, hvis en annen device skriver i tidsrommet mellom GET og POST kan dataen bli overskrevet.
+            </b>
+            <br><br>
+            Det er tungvindt å løse dette gratis (kan bruke flere dweets og ha en master-dweet for å holde styr på
+            hvilke ESP32 kontrollere som er tilgjengelig nå),
+            men jeg har valgt å løse dette med å sette et 10 sekunders delay
+            på hver poll man får fra kontrolleren, hvis du fortsatt opplever problemet er beste løsningen å bare
+            restarte en av devicene og håpe på at den treffer i et bedre intervall.
+            <br>
+            Eventuelt kan man skru opp delay på hver loop i .ino koden (10 sekunder som det er nå virket fint i mine
+            tester).
+            <br><br>
+            JS koden henter automatisk nye data på et 12 sekunders mellomrom, prøv å ikke refresh siden for mye siden
+            man kan få en 'timeout' ved å sende for mange API kall.
+        </p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="alert" aria-label="Close">Ok!</button>
+    </div>
     <div id="no_data_alert" class="alert alert-danger" role="alert" style="display: none">
         <b>Ser ikke ut som det finnes noe data.</b> Har du satt opp ESP32 riktig?
         Venligst sjekk at ESP32 er flashed med riktig oppsett inne i .ino filen.
         Husk å bytt Wifi SSID og passord. Husk også at "Device name" kan ikke inneholde et mellomrom.
     </div>
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <p>
-            Under testing av flere ESP32 kontrollere støtte jeg på et problem hvor det kan hende de overskriver data.
-            Dette betyr at en ESP32 sletter data til den andre siden API kallet kan gå litt tregt (Dweet sin feil).
-            Det er ingen gode måter å gjøre dette på gratis, så hvis dette skjer bare prøv og start de opp på nytt
-            igjen, eventuelt kan man sette opp delay i .ino koden. (Virket som 10 sekunder som den er på nå funker fint).
-            <br><br>
-            JS koden henter automatisk nye data på et 12 sekunders mellomrom, prøv å ikke refresh siden for mye siden
-            man kan få en 'timeout' ved å sende for mange API kall. Hvis du får opp <strong>Ser ikke ut som det
-            finnes noe data.</strong> erroren, kan dette være pga en timeout. Sjekk consollen.
-        </p>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="alert" aria-label="Close">Ok!</button>
+    <div id="timeout_alert" class="alert alert-danger" role="alert" style="display: none">
+        <b>Timeout.</b> Det har blitt gjort for mange request til dweet på for kort tid, venligst vent litt.
     </div>
     <hr>
     <div id="sensor_container"></div>
+    <hr>
     <p id="userFeedback" class="badge badge-pill badge-success">Data fra 14.11.2021 kl: 15:32</p>
 </div>
 </body>

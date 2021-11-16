@@ -1,23 +1,31 @@
 const sensor_output = document.getElementById("sensor_container")
+const userFeedbackDiv = document.getElementById("userFeedback")
 
 const get_sensor_data = () => {
-  let userFeedbackDiv = document.getElementById("userFeedback")
   userFeedbackDiv.innerHTML = "Henter data..."
-  userFeedbackDiv.classList.remove("badge-success")
-  userFeedbackDiv.classList.add("badge-warning")
+  userFeedbackDiv.className = "badge badge-pill badge-warning"
   return fetch("https://dweet.io/get/latest/dweet/for/sanderEksamen").then(r => r.json()).then(d => {
     const {this: status, with: contentArray} = d;
     if(status !== "succeeded") {
-      console.log("Feil ved henting av data, status:", status)
       console.log(d)
+      const {because} = d
+      if(because === "we couldn't find this") {
+        document.getElementById("no_data_alert").style.display = "block"
+      } else if (because.startsWith("Rate limit exceeded")) {
+        document.getElementById("timeout_alert").style.display = "block"
+      }
+      userFeedbackDiv.innerHTML = "Klarte ikke hente data fra Dweet."
+      userFeedbackDiv.className = "badge badge-pill badge-danger"
       return []
+    } else if (status === "succeeded") {
+      document.querySelectorAll(".alert-danger").forEach(el => el.style.display = "none")
     }
+
     const data = JSON.parse(contentArray[0].content.content)
     const devices = Object.keys(data)
     const dateTime = new Date(contentArray[0]["created"])
-    userFeedbackDiv.innerHTML = "Data fra: "+dateTime.toLocaleString()
-    userFeedbackDiv.classList.add("badge-success")
-    userFeedbackDiv.classList.remove("badge-warning")
+    userFeedbackDiv.innerHTML = "Siste device poll: "+dateTime.toLocaleString()
+    userFeedbackDiv.className = "badge badge-pill badge-success"
     return devices.map(deviceName => {
       return {
         name: deviceName,
@@ -44,12 +52,12 @@ const display_sensor_data = async () => {
     `
     return div
   })
-
-  const no_data_alert = document.getElementById("no_data_alert")
-  no_data_alert.style.display = sensor_divs.length > 0 ? "none" : "block"
-
-  sensor_output.innerHTML = "";
-  sensor_divs.forEach(d => sensor_output.appendChild(d))
+   if(sensor_data.length > 0) {
+     sensor_output.innerHTML = "";
+     sensor_divs.forEach(d => sensor_output.appendChild(d))
+   } else {
+     document.getElementById("no_data_alert").style.display = "block"
+   }
 }
 
 display_sensor_data().then(() => setInterval(display_sensor_data, 12000))
