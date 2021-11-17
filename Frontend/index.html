@@ -22,7 +22,7 @@
                 Siden ESP32 kontrolleren henter data fra Dweet for å så legge på egen data og legger
                 det tilbake, hvis en annen device skriver i tidsrommet mellom GET og POST kan dataen bli overskrevet.
             </b>
-            <br><br>
+            <br>
             Det er tungvindt å løse dette gratis (kan bruke flere dweets og ha en master-dweet for å holde styr på
             hvilke ESP32 kontrollere som er tilgjengelig nå),
             men jeg har valgt å løse dette med å sette et 10 sekunders delay
@@ -32,18 +32,28 @@
             Eventuelt kan man skru opp delay på hver loop i .ino koden (10 sekunder som det er nå virket fint i mine
             tester).
             <br><br>
+            Dweet holder på data i 24 timer før det slettes, hvis det ligger 1-2 ekstra devicer i lista er disse nok mine (hvis du tester dette kort tid
+            etter innlevering). Hvis du vil fjerne alt er det bare å sende et tomt JSON object til dweet API til 'sanderEksamen' dweeten.
+            Nederst på siden er det en liten badge som viser når siste oppdatering var gjort mot Dweet (poll).
+            <br><br>
             JS koden henter automatisk nye data på et 12 sekunders mellomrom, prøv å ikke refresh siden for mye siden
             man kan få en 'timeout' ved å sende for mange API kall.
         </p>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="alert" aria-label="Close">Ok!</button>
     </div>
     <div id="no_data_alert" class="alert alert-danger" role="alert" style="display: none">
-        <b>Ser ikke ut som det finnes noe data.</b> Har du satt opp ESP32 riktig?
-        Venligst sjekk at ESP32 er flashed med riktig oppsett inne i .ino filen.
-        Husk å bytt Wifi SSID og passord. Husk også at "Device name" kan ikke inneholde et mellomrom.
+        <b>Ser ikke ut som det finnes noe data.</b><br>
+        <ul>
+            <li>Er ESP32 flashet med riktig oppsett i .ino filen?</li>
+            <li>Er Wifi SSID og passord byttet?</li>
+            <li>Inneholder 'Device name' et mellomrom?</li>
+        </ul>
     </div>
     <div id="timeout_alert" class="alert alert-danger" role="alert" style="display: none">
         <b>Timeout.</b> Det har blitt gjort for mange request til dweet på for kort tid, venligst vent litt.
+    </div>
+    <div id="dweet_doesnt_exist" class="alert alert-danger" role="alert" style="display: none">
+        <b>Ugyldig dweet.</b> Dette skjer når dweeten 'sanderEksamen' ikke har blitt brukt på 24 timer.
     </div>
     <hr>
     <div id="sensor_container"></div>

@@ -7,17 +7,18 @@ const get_sensor_data = () => {
   return fetch("https://dweet.io/get/latest/dweet/for/sanderEksamen").then(r => r.json()).then(d => {
     const {this: status, with: contentArray} = d;
     if(status !== "succeeded") {
+      document.querySelectorAll(".alert-danger").forEach(el => el.style.display = "none")
       console.log(d)
       const {because} = d
       if(because === "we couldn't find this") {
-        document.getElementById("no_data_alert").style.display = "block"
+        document.getElementById("dweet_doesnt_exist").style.display = "block"
       } else if (because.startsWith("Rate limit exceeded")) {
         document.getElementById("timeout_alert").style.display = "block"
       }
       userFeedbackDiv.innerHTML = "Klarte ikke hente data fra Dweet."
       userFeedbackDiv.className = "badge badge-pill badge-danger"
       return []
-    } else if (status === "succeeded") {
+    } else {
       document.querySelectorAll(".alert-danger").forEach(el => el.style.display = "none")
     }
 
