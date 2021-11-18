@@ -21,12 +21,14 @@ char * deviceName = "Device1"; // Dont use space in the name, or the request wil
 
 //INTERNAL SETUP, CHANGING MAY CAUSE PROBLEMS
 String dweetName = "sanderEksamen";
+int wifiLedPin = 5;
 
 //TODO 
 //  - [DONE] Implementere et Json library, fetch current dweet state -> legg på info -> legg tilbake
 //    Ergo, mulighet for flere IoT devices på samme dweet.
 
 void setup() {
+    pinMode(wifiLedPin, OUTPUT);
     Serial.begin(9600);
 
     dht.begin();
@@ -42,6 +44,7 @@ void setup() {
 
 void loop() {
     if((wifiMulti.run() == WL_CONNECTED)) {
+        digitalWrite(wifiLedPin, HIGH);
         float temp = dht.readTemperature();
         float humidity = dht.readHumidity();
 
