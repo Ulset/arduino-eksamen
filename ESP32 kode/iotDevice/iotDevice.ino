@@ -23,7 +23,7 @@ char * deviceName = "Device1"; // Dont use space in the name, or the request wil
 String dweetName = "sanderEksamen";
 int wifiLedPin = 5;
 
-//TODO 
+//TODO
 //  - [DONE] Implementere et Json library, fetch current dweet state -> legg på info -> legg tilbake
 //    Ergo, mulighet for flere IoT devices på samme dweet.
 
@@ -79,7 +79,7 @@ void loop() {
         content[deviceName]["temp"] = (String)temp;
         content[deviceName]["humidity"] = (String)humidity;
 
-        
+
         String payload;
         serializeJson(content, payload);
         String url = "http://dweet.io/dweet/for/"+dweetName+"?content=";
@@ -99,5 +99,5 @@ void loop() {
 }
 
 void displayError(){
-    //TODO Add light or something that tells if something is wrong.
+    //TODO Lys eller noe som viser hvis noe går galt.
 }
